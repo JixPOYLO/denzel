@@ -10,6 +10,7 @@ const assert = require('assert');
 
 const dbName = "datadenzel";
 const collectionName = "movies";
+const collectionReviews = "reviews";
 //const actor = 'nm0000243';
 
 console.log("Hello");
@@ -25,6 +26,8 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
   const db = client.db(dbName);
 
   const dbCollection= db.collection(collectionName);
+  const dbCollectionReview= db.collection(collectionReviews);
+
 
   const app = express();
 
@@ -141,7 +144,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     let date = request.body.date
     let review = request.body.review
 
-    dbCollection.insert({id:id, date:date, review:review},(error, result) => { 
+    dbCollectionReview.insert({MovieId:id, date:date, review:review},(error, result) => { 
       if (error) throw error;
       response.json(result);
       console.log("hi")
@@ -158,14 +161,15 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     id = id?id:'tt0477080'
     let date = request.body.date
     let review = request.body.review
-    let modif = {date:date, review:review}
+    let modif = {"Last review ": review , "Last review published the ": date}
 
-    dbCollection.updateMany({id:id}, {$set: modif},(error, result) => { 
+    dbCollection.updateOne({id:id}, {$set: modif},(error, result) => { 
       if (error) throw error;
-      response.json(result);
+      //response.json(result);
       console.log("yo")
       
     });
+
 
     /*dbCollection.updateMany({id:id}, {$set: modif},(error, result) => { 
       if (error) throw error;
@@ -173,7 +177,27 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
       console.log("yo")
       
     });*/
+
+    dbCollectionReview.insert({MovieId:id, date:date, review:review},(error, result) => { 
+      if (error) throw error;
+      response.json(result);
+      console.log("holu")
+
+       //MongoDB query :
+       
+    });
   });
+
+  app.get('/reviews', (request, response) => {
+      console.log("ici")
+      dbCollectionReview.find().toArray((error, result) => {
+        if (error) throw error;
+        response.json(result)
+       });
+      
+  });
+
+  
 
 
 
