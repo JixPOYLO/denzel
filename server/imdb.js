@@ -4,6 +4,7 @@ const pLimit = require('p-limit');
 const pSettle = require('p-settle');
 const {IMDB_NAME_URL, IMDB_URL, P_LIMIT} = require('./constants');
 
+console.log("hey")
 /**
  * Get filmography for a given actor
  * @param  {String}  actor - imdb id

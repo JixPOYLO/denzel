@@ -13,6 +13,8 @@ async function start (actor = DENZEL_IMDB_ID, metascore = METASCORE) {
     console.log(JSON.stringify(movies, null, 2));
     console.log(`🥇 ${awesome.length} awesome movies found.`);
     console.log(JSON.stringify(awesome, null, 2));
+    let listmovies=JSON.stringify(awesome, null, 2)
+    false.writeFileSync('moviesdenzel.json', listmovies)
     process.exit(0);
   } catch (e) {
     console.error(e);
