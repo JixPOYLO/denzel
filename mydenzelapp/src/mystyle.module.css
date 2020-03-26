@@ -1,0 +1,45 @@
+.bigblue {
+  padding: 40px;
+  font-family: Arial;
+  text-align: center;
+  color: #ebe8e8; 
+  background-color: #1f90c98e;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px; 
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 72px; 
+}
+
+.infosgen {
+  padding: 40px;
+  font-family: Arial;
+  text-align: left;
+  color: #831c1c; 
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px; 
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 0px; 
+}
+
+
+.rouge {
+
+  color: #831c1c; 
+
+}
+
+.button {
+  background-color: #831c1c; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}

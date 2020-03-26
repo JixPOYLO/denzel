@@ -1,0 +1,25 @@
+.bigblue {
+  padding: 40px;
+  font-family: Arial;
+  font-style: italic;
+  text-align: center;
+  color: #e44040; 
+  background-color: #07662ce7;
+  font-family: 'Jazz LET','fantasy';
+  font-size: 60px; 
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 72px; 
+}
+
+.infosgen {
+  padding: 40px;
+  font-family: Arial;
+  text-align: left;
+  color: #ebe8e8; 
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px; 
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 0px; 
+}

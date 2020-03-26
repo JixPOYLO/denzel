@@ -28,7 +28,6 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
   const dbCollection= db.collection(collectionName);
   const dbCollectionReview= db.collection(collectionReviews);
 
-
   const app = express();
 
   module.exports = app;
@@ -85,6 +84,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     dbCollection.aggregate([{ $match: {"metascore":{$gte:75}}},{ $sample: {size: 1 }}]).toArray((error, result) => { 
       if (error) throw error;
       response.json(result);
+      console.log("movie random")
 
        //MongoDB query :
        // "metascore":{$gte:75} : movie that has a metascore rate > 75 <=> is a must-watch movie
@@ -107,7 +107,8 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
       if (error) throw error;
       const total=result.length  
       response.json(result)
-      console.log(total)
+      console.log("total "+ total)
+      console.log("search")
 
        //MongoDB query :
        // "metascore":{$gte:meta} : movie that has a metascore rate > meta
@@ -128,7 +129,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     dbCollection.aggregate([{ $match: {"id":id}}]).toArray((error, result) => { 
       if (error) throw error;
       response.json(result);
-      console.log("hola")
+      console.log("hola spe")
 
        //MongoDB query :
        // match on the movie's id that we want 
@@ -147,7 +148,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     dbCollectionReview.insert({MovieId:id, date:date, review:review},(error, result) => { 
       if (error) throw error;
       response.json(result);
-      console.log("hi")
+      console.log("hi post")
 
        //MongoDB query :
        
