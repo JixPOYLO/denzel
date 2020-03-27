@@ -48,6 +48,14 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
       console.log(result.title);
     });
   });
+  
+  app.get('/movies/all', (request, response) => {
+    dbCollection.find().toArray((error, result) => {
+      if (error) throw error;
+      //response.json(result);
+      response.json(result)
+    });
+  });
 
   
   app.get('/movies/populate/:actor', async(request, response) => {
@@ -189,26 +197,22 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
     });
   });
 
-  app.get('/reviews', (request, response) => {
-      console.log("ici")
-      dbCollectionReview.find().toArray((error, result) => {
+  app.get('/reviews/:id', (request, response) => {
+      
+      let id = request.query.id
+      id = id?id:'tt2671706'
+
+      dbCollectionReview.aggregate([{ $match: {"MovieId":id}}]).toArray((error, result) => { 
         if (error) throw error;
-        response.json(result)
-       });
+        response.json(result);
+        console.log("spe review")
+      });
       
   });
 
   
 
 
-
-  
-
-
-
-
-
- 
 
   app.listen(PORT);
   console.log(`📡 Running on port ${PORT}`);
