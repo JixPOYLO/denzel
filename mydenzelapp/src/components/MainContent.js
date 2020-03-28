@@ -60,6 +60,52 @@ class MainContent extends Component{
             )
     }
 
+    async AddReview(mID){
+
+
+      const dd = document.getElementById("DD")
+      var mydate= dd.value+"-"
+      const mm = document.getElementById("MM")
+      mydate= mydate+mm.value+"-"
+      const yyyy =document.getElementById("YYYY");
+      mydate=mydate+yyyy.value
+
+      const r = document.getElementById("R")
+      const myreview = r.value
+      const form = document.getElementById("RForm");
+
+      const url="http://localhost:9292/movies/:id?id="+mID
+
+      const Rdata={
+        date: mydate,
+        review: myreview
+      }
+
+      const putMethod = {
+        method: 'PUT', 
+        headers: {
+         'Content-type': 'application/json; charset=UTF-8' 
+        },
+        body: JSON.stringify(Rdata) 
+      }
+
+
+      if (mydate.value != "" && myreview.value!="") {
+      
+        await fetch(url, putMethod)    
+        .then(response => response.json())
+        .then(data => console.log(data)) 
+        .catch(err => console.log(err))
+
+        form.reset();
+      } else {
+        console.log("")
+      }
+
+    
+   
+    }
+
     componentDidMount() {
        this.LoadData(this.state.api,"tt0328107",0);
     }
@@ -104,9 +150,9 @@ class MainContent extends Component{
                 
     }
 
-    WatchReviews(e){
+    WatchReviews(watchID){
 
-        e.preventDefault();
+        //e.preventDefault();
         console.log("Reviews was clicked !")
         this.setState({              
                   api : 4,
@@ -114,11 +160,11 @@ class MainContent extends Component{
         });
 
         //this.LoadData(4,0,0);
-        const form = document.getElementById("reviewForm");
-        const watchID =document.getElementById("watchID");
+        //const form = document.getElementById("reviewForm");
+        //const watchID =document.getElementById("watchID");
         //watchID ="tt0328107"
-        this.LoadData(4,watchID.value ,0);
-        form.reset();
+        this.LoadData(4,watchID ,0);
+        //form.reset();
         
                 
     }
@@ -164,12 +210,12 @@ class MainContent extends Component{
 
 
         const { error, isLoaded, api, items } = this.state;
-        console.log("api "+api)
-        console.log("items "+items)
+        //console.log("api "+api)
+        //console.log("items "+items)
         if (error) {
           return <div>Erreur : {error.message}</div>;
         } else if (!isLoaded) {
-          return <div>Loading …</div>;
+          return <div>Loading … </div>;
         } else if(this.state.api <= 3 ) {
           return (
             <div>
@@ -220,8 +266,8 @@ class MainContent extends Component{
                           id="watchID"
                           value={item.id}
                         />  
-                        <button className="button is-info" onClick={this.WatchReviews}>
-                          Check Reviews
+                        <button className="button is-info" onClick={() => this.WatchReviews(item.id)}>
+                             Check Reviews
                         </button>
                         </form>
                         
@@ -247,9 +293,40 @@ class MainContent extends Component{
                     <p>Date : {item.date}</p>
                     <p>Review : {item.review}</p> 
                     <hr/>
+                   
+                    <form className="form" id="RForm" >
+                    <input
+                      type="text"
+                      className="input"
+                      id="DD"
+                      placeholder="    DD "
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      id="MM"
+                      placeholder="   MM    "
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      id="YYYY"
+                      placeholder="   YYYY    "
+                    />
+                    <input
+                      type="text"
+                      className="input"
+                      id="R"
+                      placeholder="   Write your Review    "
+                    />
+                     <button className="button is-info" onClick={() => this.AddReview(item.MovieId)}>
+                          Add Your Review !
+                    </button>
+                </form>
                     </div>
                     ))}
                 </ul>
+                
 
              
 

@@ -204,7 +204,13 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
 
       dbCollectionReview.aggregate([{ $match: {"MovieId":id}}]).toArray((error, result) => { 
         if (error) throw error;
+        console.log("res"+result.length)
+        if(result.length>0){
         response.json(result);
+        }
+        if(result.length==0){
+          response.json([{'MovieId': id, 'date':'No data','review':'No reviews found for this movie'}]);
+        }
         console.log("spe review")
       });
       
