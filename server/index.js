@@ -150,10 +150,11 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
 
     let id = request.query.id
     id = id?id:'tt0477080'
+    let pseudo = request.body.pseudo
     let date = request.body.date
     let review = request.body.review
 
-    dbCollectionReview.insert({MovieId:id, date:date, review:review},(error, result) => { 
+    dbCollectionReview.insert({MovieId:id, pseudo:pseudo, date:date, review:review},(error, result) => { 
       if (error) throw error;
       response.json(result);
       console.log("hi post")
@@ -168,9 +169,10 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
 
     let id = request.query.id
     id = id?id:'tt0477080'
+    let pseudo = request.body.pseudo
     let date = request.body.date
     let review = request.body.review
-    let modif = {"Last review ": review , "Last review published the ": date}
+    let modif = {"Pseudo":pseudo, "LR": review , "LRdate": date}
 
     dbCollection.updateOne({id:id}, {$set: modif},(error, result) => { 
       if (error) throw error;
@@ -187,7 +189,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
       
     });*/
 
-    dbCollectionReview.insert({MovieId:id, date:date, review:review},(error, result) => { 
+    dbCollectionReview.insert({MovieId:id, pseudo:pseudo, date:date, review:review},(error, result) => { 
       if (error) throw error;
       response.json(result);
       console.log("holu")
@@ -209,7 +211,7 @@ MongoClient.connect(url, {useUnifiedTopology: true} , function(err, client) {
         response.json(result);
         }
         if(result.length==0){
-          response.json([{'MovieId': id, 'date':'No data','review':'No reviews found for this movie'}]);
+          response.json([{'MovieId': id, 'pseudo': 'No one','date':'No data','review':'No reviews found for this movie'}]);
         }
         console.log("spe review")
       });

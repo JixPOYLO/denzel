@@ -1,16 +1,68 @@
-.bigblue {
-  padding: 40px;
+.b {
   font-family: Arial;
   font-style: italic;
-  text-align: center;
-  color: #e44040; 
-  background-color: #07662ce7;
+  text-align: left;
+  color: #ebe8e8; 
   font-family: 'Jazz LET','fantasy';
-  font-size: 60px; 
-  font-weight: 300;
-  line-height: 32px;
-  margin: 0 0 72px; 
+  font-size: 30px; 
+  font-weight: 500;
+  margin: 0 0 0px; 
+ 
+
 }
+
+ul {
+  border-radius: 12px;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  top:0;
+  width: 30%;
+  background-color: rgba(223, 47, 62, 0.514); 
+  right:5%;
+}
+
+li {
+
+  border-radius: 4px;
+  height: 670px;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;  
+  width: 50%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  background-color: rgb(235, 170, 28); 
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+ol {
+
+  border-radius: 4px;
+  height: 140px;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;  
+  width: 50%;
+  box-sizing: border-box;
+  background-color: rgb(223, 47, 61);
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+.c{
+  text-align : center;
+  width: 80%;
+  height: 15%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 
 .infosgen {
   padding: 40px;
@@ -22,4 +74,88 @@
   font-weight: 300;
   line-height: 32px;
   margin: 0 0 0px; 
+}
+
+.button4 {
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 14px;
+  background-color: rgb(223, 47, 61);
+  color: #ebe8e8;
+}
+
+.button2 {
+  border-radius: 12px;
+  padding: 6px 15px;
+  font-size: 14px;
+  background-color: rgb(223, 47, 61);
+  color: #ebe8e8;
+}
+
+.button4:hover {
+  background-color: RoyalBlue;
+}
+
+.button2:hover {
+  background-color: RoyalBlue;
+}
+
+input[type=text] {
+  width: 30%;
+  border-radius: 6px;
+  padding: 6px 15px;
+  margin: center;
+  border: none;
+  background-color: rgb(235, 85, 85);
+  color: white;
+}
+
+input[type=date] {
+
+  width: 40%;
+  border-radius: 6px;
+  padding: 6px 15px;
+  margin: center;
+  border: none;
+  background-color: rgb(235, 85, 85);
+  color: white;
+
+}
+
+input {
+  width: 30%;
+  border-radius: 6px;
+  padding: 6px 15px;
+  margin: center;
+  border: none;
+  background-color: rgb(235, 85, 85);
+  color: white;
+}
+
+
+::placeholder {
+  color: whitesmoke;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color:  whitesmoke;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+ color:  whitesmoke;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+}
+
+/* Create two equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  padding: 10px;
 }

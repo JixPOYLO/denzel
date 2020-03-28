@@ -1,14 +1,10 @@
 import React,{Component} from 'react'
 //import { Button } from 'reactstrap';
-import MovieCard from './MovieCard'
 //import restoData from './example.json'
 //import Data from './moviesdenzel.json'
 import styles from './mystyle.module.css'; 
 
 
-
-
-var call="";
 
 class MainContent extends Component{
 
@@ -18,7 +14,8 @@ class MainContent extends Component{
           error: null,
           isLoaded: false,
           api : 0,
-          items: []
+          items: [],
+          coms:[]
         };
 
         this.Option= this.Option.bind(this)
@@ -32,21 +29,24 @@ class MainContent extends Component{
     }
     
     async LoadData(a, param1, param2){
+      
+        var call="";    
         if( a == 0) {  call="http://localhost:9292/movies/all"}
-        if( a == 1) {  call="http://localhost:9292/movies"  }
+        if( a == 1) {  call=" http://localhost:9292/movies/search?limit="+param1+"&metascore="+param2}
         if( a == 2) {  call="http://localhost:9292/movies/:id?id="+param1}
-        if( a == 3) {  call=" http://localhost:9292/movies/search?limit="+param1+"&metascore="+param2}
+        if( a == 3) {  call="http://localhost:9292/movies" }
         if( a == 4) {  call="http://localhost:9292/reviews/:id?id="+param1}
-        if( a == 3) {  call=" http://localhost:9292/movies/search?limit="+param1+"&metascore="+param2}
+       
 
 
-
+        if(a != 4)
+        {
         await fetch(call)
           .then(res => res.json())
           .then(
-            (result) => {
+            (result) => {         
               this.setState({
-                isLoaded: true,
+                isLoaded: true,              
                 items: result
               });
             },
@@ -58,25 +58,48 @@ class MainContent extends Component{
               });
             }
             )
+        }
+
+        else
+        {
+        await fetch(call)
+          .then(res => res.json())
+          .then(
+            (result) => {         
+              this.setState({
+                isLoaded: true,              
+                coms: result
+              });
+            },
+          
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              });
+            }
+            )
+        }
     }
 
-    async AddReview(mID){
+    async AddReview(){
 
+      const mID = document.getElementById("mID")
 
-      const dd = document.getElementById("DD")
-      var mydate= dd.value+"-"
-      const mm = document.getElementById("MM")
-      mydate= mydate+mm.value+"-"
-      const yyyy =document.getElementById("YYYY");
-      mydate=mydate+yyyy.value
+      const pseudo = document.getElementById("pseudo")
+      var mypseudo= pseudo.value 
 
+      const dateR = document.getElementById("dateR")
+      var mydate= dateR.value
+     
       const r = document.getElementById("R")
       const myreview = r.value
       const form = document.getElementById("RForm");
 
-      const url="http://localhost:9292/movies/:id?id="+mID
+      const url="http://localhost:9292/movies/:id?id="+mID.value
 
       const Rdata={
+        pseudo: mypseudo,
         date: mydate,
         review: myreview
       }
@@ -90,17 +113,21 @@ class MainContent extends Component{
       }
 
 
-      if (mydate.value != "" && myreview.value!="") {
+      if (mydate.value != "" && myreview.value!="" && mypseudo.value!="") {
       
         await fetch(url, putMethod)    
         .then(response => response.json())
         .then(data => console.log(data)) 
         .catch(err => console.log(err))
 
+        alert("Thanks! Your review has been added !" )
+
+
         form.reset();
       } else {
         console.log("")
       }
+
 
     
    
@@ -125,7 +152,7 @@ class MainContent extends Component{
 
         console.log("Limit was clicked !")
         this.setState({              
-                  api : 3,
+                  api : 1,
                   isLoaded : false
         });
         const limit = document.getElementById("limit");
@@ -136,7 +163,7 @@ class MainContent extends Component{
 
         if (limit.value != "" && meta.value != "") {
         
-          this.LoadData(3,limit.value,meta.value);
+          this.LoadData(1,limit.value,meta.value);
           limit.classList.remove("is-danger");
           meta.classList.remove("is-danger");
 
@@ -151,6 +178,7 @@ class MainContent extends Component{
     }
 
     WatchReviews(watchID){
+      this.LoadData(2,watchID ,0);
 
         //e.preventDefault();
         console.log("Reviews was clicked !")
@@ -199,17 +227,17 @@ class MainContent extends Component{
 
         console.log("MustWatch was clicked !")
         this.setState({              
-                  api : 1,
+                  api : 3,
                   isLoaded : false
         });
-        this.LoadData(1,0,0);
+        this.LoadData(3,0,0);
                 
     }
     
     render(){
 
 
-        const { error, isLoaded, api, items } = this.state;
+        const { error, isLoaded, api, items, coms } = this.state;
         //console.log("api "+api)
         //console.log("items "+items)
         if (error) {
@@ -219,119 +247,194 @@ class MainContent extends Component{
         } else if(this.state.api <= 3 ) {
           return (
             <div>
-                <ul>
-                <button onClick={this.Option} > All movies </button>
-                <button onClick={this.MustWatch}> A MustWatch movie </button>  
-                <form className="form" id="SpeForm" >
-                    <input
-                      type="text"
-                      className="input"
-                      id="mID"
-                      placeholder="       enter a movie ID "
-                    />
-                    <button className="button is-info" onClick={this.Spe}>
-                      Search Specific Movie
-                    </button>
-                </form>
-                <form className="form" id="MLForm" >
-                    <input
-                      type="text"
-                      className="input"
-                      id="meta"
-                      placeholder="    Minimum Metascore "
-                    />
-                    <input
-                      type="text"
-                      className="input"
-                      id="limit"
-                      placeholder="   Limit of result    "
-                    />
-                    <button className="button is-info" onClick={this.LimitMeta}>
-                      Search by Metascore and Limit
-                    </button>
-                </form>
+                <h2>Movies</h2>
+                <p>API Option {this.state.api}</p>
 
+                <ul>
+                  <form>
+                  <hr/>
+                  
+                  <button className={styles.button4} href="#mlist" onClick={this.Option} > All movies </button>
+                  
+                  <button className={styles.button4} onClick={this.MustWatch}> A MustWatch movie </button>  
+                  <br/>
+                  <br/>
+                  </form>
+                
+                  <form className="form" id="SpeForm" >
+                      <input
+                        type="text"
+                        className="input"
+                        id="mID"
+                        placeholder="Enter movieID"
+                      />
+                  
+                      <button className={styles.button2}  onClick={this.Spe}>
+                        Search 
+                      </button>
+                      
+
+                     
+                      <br/>
+                                      
+                      <br/>
+                  </form>
+
+                  <form className="form" id="MLForm" >
+                      <label for="metascore">Minimum metascore (50-80) :  </label>
+                    
+                      <input type="number" name="metascore"
+                        min="50" max="80"
+                        id="meta"
+                        placeholder="Metascore"
+                      />
+                      <br/>
+                      <br/>
+                    
+
+                      <label for="nb">Number of results (1-10) :  </label>
+                  
+                      <input type="number" name="nb"
+                        min="1" max="10"
+                        id="limit"
+                        placeholder="Limit"
+                      />
+                      <br/>
+                      <br/>
+                    
+                    
+
+                      <button className={styles.button2} onClick={this.LimitMeta}>
+                        Search with those filters
+                      </button>
+
+                      <br/>
+                      <br/>
+                  </form>
+
+                </ul>
+
+
+                <br/>
                 {this.state.items.map(item => (
                     <div>
+                        <li>
+                        <br/>
                         <h3 key={item.id}>{item.title}</h3>   
                         <img src={item.poster}/>      
                         <p >Id : {item.id}</p>
                         <p>Metascore : {item.metascore}</p>
                         <p>Year : {item.year}</p>
-                        <p>Synopsis : {item.synopsis}</p>
-                        <form className="form" id="reviewForm" >
-                        <input
-                          type="hidden"
-                          className="input"
-                          id="watchID"
-                          value={item.id}
-                        />  
-                        <button className="button is-info" onClick={() => this.WatchReviews(item.id)}>
-                             Check Reviews
-                        </button>
+                        <p className={styles.c}>Synopsis : {item.synopsis}</p>
+                        <form className="form" id="reviewForm" >                     
+                          <button className={styles.button2} onClick={() => this.WatchReviews(item.id)}>
+                               See more reviews
+                          </button>
                         </form>
+
+                        <p className={styles.c}>{item.LR} {item.LRdate}</p>
+                             
+                        <br/>
+                        <br/>
+                        </li>
                         
-                        <hr/>
                     </div>
                 ))}
-
-            
-                <h2>API Option number {this.state.api}</h2>
-                </ul>
+                
+                
                 
             </div>
           );
         } else if(this.state.api == 4 ) {
             return (
-              <div>             
-                <button onClick={this.Option}> Back to All Movies </button>  
-               
-                <ul>
-                    {this.state.items.map(item => (
-                    <div>
-                    <h3 >{item.MovieId}</h3>       
-                    <p>Date : {item.date}</p>
-                    <p>Review : {item.review}</p> 
-                    <hr/>
+              <div>   
+
+                 <p>API Option {this.state.api}</p>
+
+                        
+                <button className={styles.button4} onClick={this.Option}> Back to All Movies </button>
+                <br/>
+                <br/>
+                <form className="form" id="SpeForm" >
                    
-                    <form className="form" id="RForm" >
-                    <input
-                      type="text"
-                      className="input"
-                      id="DD"
-                      placeholder="    DD "
-                    />
-                    <input
-                      type="text"
-                      className="input"
-                      id="MM"
-                      placeholder="   MM    "
-                    />
-                    <input
-                      type="text"
-                      className="input"
-                      id="YYYY"
-                      placeholder="   YYYY    "
-                    />
-                    <input
-                      type="text"
-                      className="input"
-                      id="R"
-                      placeholder="   Write your Review    "
-                    />
-                     <button className="button is-info" onClick={() => this.AddReview(item.MovieId)}>
-                          Add Your Review !
+                    <button className={styles.button4} onClick={this.Spe}>
+                      Back to Movie Info
                     </button>
+                    <br/>
+                    <br/>
+
+
                 </form>
-                    </div>
-                    ))}
+                <ul>
+                <form className="form" id="RForm" >  
+                          <h3>Add your review :</h3>      
+                          <input type="date" id="dateR"
+                           
+                           min="2020-01-01" max="2022-12-31">
+
+                          </input>
+                          <br/>
+                          <br/>
+                
+                          <input
+                            type="text"
+                            className="input"
+                            id="pseudo"
+                            placeholder="Write pseudo "
+                          />
+                          <br/> 
+                          <br/>          
+                          <input
+                            type="text"
+                            className="input"
+                            id="R"
+                            placeholder="Write here .."
+                          />    
+                          <br/> 
+                          <br/>  
+
+                          <button className={styles.button4} onClick={() => this.AddReview()}>
+                                Send
+                          </button>
+                </form>  
+                <hr/>
                 </ul>
                 
 
-             
+                {this.state.items.map(item => (
+                    <div>
+                       
+                        <br/>
+                        <h3>{item.title}</h3>   
+                        <img src={item.poster}/>      
 
-                <h2>API Option number {this.state.api}</h2>
+                        <br/>
+                       
+                        
+                    </div>
+                ))}
                 
+                {this.state.coms.map(item => (
+                    <ol>
+                    <form>
+                    <div>
+                    <h4>Date : {item.date}</h4>
+                    <h4>Review : {item.review}</h4> 
+                    <h4> by {item.pseudo}</h4> 
+
+                    <input
+                          type="hidden"
+                          className="input"
+                          id="mID"
+                          value={item.MovieId}
+                        />  
+                   
+                    </div>
+                    </form>
+                    </ol>
+                    ))}
+                
+                                
               </div>
             );
         }

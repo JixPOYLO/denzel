@@ -4,7 +4,7 @@ function Header()  {
    
     return (
 
-        <h1>MOVIE DENZEL</h1>
+        <h1>DENZEL WEB APP'</h1>
     )
     
 }
